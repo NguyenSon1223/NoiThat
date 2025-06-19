@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Models;
+using Backend.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -18,34 +19,42 @@ namespace Backend.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoryController(ApplicationDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CategoryController(ApplicationDbContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        // GET ALL
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            var listCate = _unitOfWork.Category.GetAll().ToList();
+            return Ok(listCate);
         }
 
-        // GET BY ID
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            if (id == 0 || id == null)
+            {
                 return NotFound();
+            }
 
-            return category;
+            Category? cateDb = _unitOfWork.Category.Get(u => u.Id == id);
+
+            if (cateDb == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(cateDb);
         }
 
-        // ✅ TẠO MỚI CATEGORY
         [HttpPost]
         public async Task<IActionResult> CreateCategory(Category category)
         {
-            // Kiểm tra ID
             if (category.Id == 0)
                 return BadRequest("Id không được bằng 0 hoặc null.");
 
@@ -66,7 +75,6 @@ namespace Backend.Controllers
             return Ok(category);
         }
 
-        // ✅ CHỈNH SỬA CATEGORY
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, Category category)
         {
@@ -94,7 +102,6 @@ namespace Backend.Controllers
             return Ok(existing);
         }
 
-        // ✅ XOÁ CATEGORY
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
