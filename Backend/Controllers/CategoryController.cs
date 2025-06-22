@@ -37,7 +37,7 @@ namespace Backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            if (id == 0 || id == null)
+            if (id <= 0 || id == null)
             {
                 return NotFound();
             }
@@ -55,9 +55,6 @@ namespace Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(Category category)
         {
-            if (category.Id == 0)
-                return BadRequest("Id không được bằng 0 hoặc null.");
-
             // Kiểm tra Name
             if (string.IsNullOrWhiteSpace(category.Name))
                 return BadRequest("Tên không được để trống.");

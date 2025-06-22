@@ -12,7 +12,15 @@ export class CategoryService {
 
   constructor(private http: HttpClient){}
 
+  // Ket noi toi HTTP Get Lay tat ca cua Category
   getAll(): Observable<Category[]> {
     return this.http.get<Category[]>(this.apiUrl);
   }
-}
+
+  // Ket noi toi HTTP Post cua Category
+  create(category: Category): Observable<any>{
+    return this.http.post(`${this.apiUrl}`, category);
+  }
+
+  
+} 

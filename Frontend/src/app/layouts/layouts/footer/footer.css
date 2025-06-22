@@ -1,0 +1,30 @@
+.footer {
+  font-size: 14px;
+  background-color: #2e2e2e;
+}
+
+.footer h6 {
+  border-bottom: 1px solid #666;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.footer ul li + li {
+  margin-top: 8px;
+}
+
+.footer .input-group input {
+  background-color: #444;
+  border: none;
+  color: white;
+}
+
+.footer .input-group button {
+  background-color: #000;
+  border: none;
+  color: white;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

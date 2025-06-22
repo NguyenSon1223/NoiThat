@@ -1,9 +1,21 @@
 import { Routes } from '@angular/router';
-import { CategoryListComponent } from './components/category-list/category-list';
-import { AppComponent } from './app';
+
 import { MainPageComponent } from './layouts/layouts/main-page/main-page';
+import { CategoryList } from './component/category/category-list/category-list';
+import { Mainlayout } from './layouts/layouts/mainlayout/mainlayout';
+import { CategoryCreate } from './component/category/category-create/category-create';
 
 export const routes: Routes = [
-    { path: 'Category', component: CategoryListComponent },
-    {path: '' , component: MainPageComponent}
+  {
+    path: '',
+    component: Mainlayout,
+    children: [
+      { path: '', component: MainPageComponent },
+      { path: 'category', component: CategoryList },
+      {
+        path: 'category/create',
+        component: CategoryCreate,
+      },
+    ],
+  },
 ];

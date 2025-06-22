@@ -1,11 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app';
-import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app'; 
+import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { routes } from './app/app.routes';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(),   // Cho phép gọi HTTP (HttpClient)
-    ...appConfig.providers // Bao gồm route từ app.config.ts
+    provideRouter(routes),
+    provideHttpClient()
   ]
-}).catch(err => console.error(err));
+});
